@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>1 Year Surprise</title>
+<style>
+body{
+  margin:0;
+  background:radial-gradient(circle,#8b0000,#3b0000);
+  font-family:'Segoe UI',sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  overflow:hidden;
+}
+
+.container{
+  background:#fff;
+  padding:55px;
+  border-radius:30px;
+  text-align:center;
+  width:520px;
+  max-width:95%;
+  box-shadow:0 0 40px rgba(255,105,180,0.6);
+  position:relative;
+  overflow:hidden;
+}
+
+/* IMAGES */
+img{
+  cursor:pointer;
+  transition:transform 0.4s;
+}
+img:hover{ transform:scale(1.1); }
+
+#letterScreen img,
+#acceptScreen img{
+  width:220px;
+  margin-bottom:25px;
+  animation:bounce 2s infinite;
+}
+
+/* GIFTS */
+.gifts img{
+  width:150px;
+  margin:20px;
+  transition:all 0.4s;
+}
+.gifts img:hover{
+  transform:scale(1.4) rotate(-10deg);
+  box-shadow:0 0 20px #ff6b81,
+             0 0 40px #ff6b81,
+             0 0 60px #ff6b81;
+  filter:drop-shadow(0 0 10px #ff6b81);
+}
+
+/* BUTTONS */
+button{
+  background:linear-gradient(135deg,#ff4d6d,#c9184a);
+  color:#fff;
+  border:none;
+  padding:15px 35px;
+  border-radius:30px;
+  cursor:pointer;
+  margin:15px;
+  font-size:18px;
+  transition:transform 0.3s,box-shadow 0.3s;
+}
+button:hover{
+  transform:scale(1.15);
+  box-shadow:0 0 20px rgba(255,0,80,0.8);
+}
+
+/* HEARTS */
+.heart{
+  position:absolute;
+  pointer-events:none;
+  animation:float 3.5s linear forwards;
+}
+
+@keyframes float{
+  0%{opacity:1;transform:translate(0,0) scale(0.6);}
+  100%{opacity:0;transform:translate(var(--x),var(--y)) scale(1.6);}
+}
+
+/* EXTRA */
+.hidden{display:none;}
+.noScreen img{
+  width:220px;
+  margin-top:20px;
+  animation:bounce 2s infinite;
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-15px);}
+}
+
+#finalPic{animation:popIn 0.5s ease forwards;}
+@keyframes popIn{
+  0%{transform:scale(0);opacity:0;}
+  100%{transform:scale(1);opacity:1;}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<!-- LETTER -->
+<div id="letterScreen">
+  <h3 style="font-size:28px;">Happyyy 1 Yearr of Togetherness Babyyyyy 💕</h3>
+  <img src="letter.png" onclick="openLetter()">
+  <p>Click the letter 💌</p>
+</div>
+
+<!-- ACCEPT -->
+<div id="acceptScreen" class="hidden">
+  <img src="teddy.png">
+  <h3>Please accept the gift 🎁</h3>
+  <button onclick="showGifts()">YES</button>
+  <button onclick="showNoScreen()">NO</button>
+</div>
+
+<!-- GIFTS -->
+<div id="giftScreen" class="hidden">
+  <h3>Choose your gift 💖</h3>
+  <div class="gifts">
+    <img src="gift1.png" onclick="openPic('pic1.png')">
+    <img src="gift2.png" onclick="openPic('pic2.png')">
+    <img src="gift3.png" onclick="openPic('pic3.png')">
+  </div>
+  <button onclick="showLikeScreen()">Next ➡️</button>
+</div>
+
+<!-- IMAGE -->
+<div id="imageScreen" class="hidden">
+  <img id="finalPic" style="width:260px;">
+  <br>
+  <button onclick="backToGifts()">Back</button>
+</div>
+
+<!-- LIKE -->
+<div id="likeScreen" class="hidden">
+  <h3>Do you like my gifts? 💝</h3>
+  <button onclick="yesLike()">YES</button>
+  <button onclick="noLike()">NO</button>
+</div>
+
+<!-- YES -->
+<div id="yesScreen" class="hidden">
+  <h3>
+    Awwwww 🥹💖 mujhe toh pta hi tha ki you will lovee themm  
+    kyuki you love me naaa 🫶  
+    and i love you soooo muchhh 💕
+  </h3>
+</div>
+
+<!-- ANGRY -->
+<div id="noScreen" class="hidden noScreen">
+  <h3>😠 NO option sirf naam ka tha</h3>
+  <img src="angry_teddy.png">
+  <br>
+  <button onclick="backToAccept()">Back</button>
+</div>
+
+<!-- SAD -->
+<div id="cryScreen" class="hidden noScreen">
+  <h3>😢 noo??</h3>
+  <img src="crying_teddy.gif">
+  <br>
+  <button onclick="showLikeScreen()">Back</button>
+</div>
+
+</div>
+
+<script>
+function hideAll(){
+  document.querySelectorAll('.container > div')
+  .forEach(d=>d.classList.add('hidden'));
+}
+
+/* MULTI-DIRECTION HEARTS */
+function hearts(n){
+  const c=document.querySelector('.container');
+  const types=['❤️','💜','💖','💘','💝','💞','💓','💛'];
+  const colors=['#ff1744','#e040fb','#ff69b4','#ff4081','#9c27b0'];
+
+  for(let i=0;i<n;i++){
+    let h=document.createElement('div');
+    h.className='heart';
+    h.innerHTML=types[Math.floor(Math.random()*types.length)];
+    h.style.color=colors[Math.floor(Math.random()*colors.length)];
+    h.style.fontSize=(18+Math.random()*35)+'px';
+
+    // start anywhere
+    h.style.left=Math.random()*480+'px';
+    h.style.top=Math.random()*480+'px';
+
+    // move random direction
+    h.style.setProperty('--x',(Math.random()*600-300)+'px');
+    h.style.setProperty('--y',(Math.random()*600-300)+'px');
+
+    c.appendChild(h);
+    setTimeout(()=>h.remove(),3500);
+  }
+}
+
+/* FLOW */
+function openLetter(){hideAll();acceptScreen.classList.remove('hidden');hearts(18);}
+function showGifts(){hideAll();giftScreen.classList.remove('hidden');hearts(15);}
+function openPic(p){finalPic.src=p;hideAll();imageScreen.classList.remove('hidden');hearts(20);}
+function backToGifts(){hideAll();giftScreen.classList.remove('hidden');}
+function showNoScreen(){hideAll();noScreen.classList.remove('hidden');}
+function backToAccept(){hideAll();acceptScreen.classList.remove('hidden');}
+function showLikeScreen(){hideAll();likeScreen.classList.remove('hidden');hearts(12);}
+function yesLike(){hideAll();yesScreen.classList.remove('hidden');hearts(30);}
+function noLike(){hideAll();cryScreen.classList.remove('hidden');}
+</script>
+
+</body>
+</html>
